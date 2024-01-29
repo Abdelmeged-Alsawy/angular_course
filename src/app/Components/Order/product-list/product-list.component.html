@@ -1,0 +1,80 @@
+
+<!-- <div>
+    <h3>Category Id:{{selectedCatId}}</h3>
+    //event binding
+    <button class="btn btn-secondary" (click)="changeCat()">ChangeCategory</button>
+</div>
+<hr>
+<br>
+Date : {{OrderDate | date :'short'}}
+<br> -->
+<hr>
+<table class="table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Img</th>
+            <th>Price in USD</th>
+            <th>Price in EGP</th>
+            <th>Quantity</th>
+            <th>Count</th>
+            <th>Buy</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Save Navigation Operator by ? ==> to not raise error  if null -->
+        <!-- Class Binding  [class.bg-warning]="p.quantity==2" || [class.d-none]="selectedCatId != p.categortId" -->
+        <!-- Style Binding  [style.font-weight]='(p.quantity) >2 ? "500" : "100" ' -->
+        <!--   <tr *ngFor="let p of proList; let i=index;trackBy:proTrackByFunc"  [class.bg-warning]="p.quantity==2" || [class.d-none]="selectedCatId != p.categortId" 
+               [style.font-weight]='(p.quantity) >2 ? "500" : "100" '> -->
+        <!-- trackBy used to speccify iterable objects identity ,
+             and so enhance the performance of ngFor in case of change collection ,
+             and update the changed object , without re-build the DOM. -->
+        <!-- <tr *ngFor="let p of proList; let i=index;" [hidden]="p.quantity == 0"> -->
+        <!--
+                - ngIf (structural directives in general) change in DOM,
+                  while class binding or [hidden] jsut change the dom element to bo hidden
+                  so ,Use ngIf , if collection isn't changed regulary in the runtime,
+                  and use binding if the collection is regullary changed.
+                - we can't use two structural directives on the same HTML element
+                  but we can use  <ng-container> that will not reflect on the actual dom.
+                - Search >> ng-container vs ng-template vs ng-content
+                  ng-template >> should have structural directive like -ngIf to be shown or not.
+                  ng-container >> by default it's content will be shown and will not be affect dom.
+            -->
+        <!-- <ng-container *ngFor="let p of proList; let i=index;">
+            <tr *ngIf="p.quantity != 0"> -->
+
+        <!-- <tr *ngFor="let p of proList; let i=index;" [ngClass]="{'text-danger':p.quantity ==0,'text-warning':p.quantity ==1}"> -->
+            <tr *ngFor="let p of proListByCat; let i=index;" [ngStyle]="{'font-weight':p.quantity ==0 ? '500' :'100' ,'font-size':p.quantity ==0 ? 'x-large' :'large'  }">
+                <td>{{i+1}}</td>
+                <!-- <td Lightbox  highLightColors="pink">{{p?.name}}</td> -->
+                <!-- <td [Lightbox]='Read From Prob in ts' >{{p?.name}}</td> -->
+                <!-- Save Navigation Operator -->
+                <td Lightbox='blue' defaultColor="pink" >{{p?.name}}</td>
+                <td><img  [src]="p.imgUrl"></td>
+                <!-- <td>{{p.price  | currency : 'USD' : 'symbol'}}</td>  Default is symbol-->
+                <td>{{p.price  | currency : 'USD' : 'code'}}</td>  
+                <td>{{p.price  | USDToEGP : 35 | currency :'EGP'}}</td>
+                <td>
+                    <!-- <div *ngIf="p.quantity != 0"> {{p.quantity}} </div>
+                    <div *ngIf="p.quantity == 0">Out of stock.</div> -->
+                    <!-- <div *ngIf="p.quantity != 0 ; else outOfStock"> {{p.quantity}} </div>
+                    <ng-template #outOfStock>Out of stock.</ng-template> -->
+                    <ng-container [ngSwitch]="p.quantity"> <!-- we can let it div -->
+                        <div *ngSwitchCase="0">Out of stock.</div>
+                        <div *ngSwitchCase="1">Last item!</div>
+                        <div *ngSwitchCase="2">Last 2 items!</div>
+                        <div *ngSwitchDefault>{{p.quantity}}</div>
+                    </ng-container>
+                </td>
+                <!-- Template Variable -->
+                <td> <input #itemsCount type="number" class="form-control"> </td>
+                <td> <button class="btn btn-secondary" (click)="buy(p.price,itemsCount.value)">Buy</button> </td>
+            </tr>
+        <!-- </ng-container> -->
+    </tbody>
+</table>
+<hr>
+<h3>Item Total Price : {{proTotalPrice}}</h3>

@@ -1,0 +1,23 @@
+<p>Create New Order</p>
+<div class="row">
+    <div class="col-2">
+        Category :
+    </div>
+    <div class="col-10">
+        <!-- <select #catClass class="form-control" name="cat" ((change)="getSelectedCatItems(cat.value)")> -->
+        <!-- <select class="form-control" name="cat" ((change)="getSelectedCatItems($event)")>  // In ts : event.target.value -->
+        <!--Two way binding need FormModule in app.modules-->
+        <select class="form-control" name="cat" [(ngModel)]="selectedCatId">
+            <option *ngFor="let cat of catList" [value]="cat.id">
+                {{cat.name}}
+            </option>
+        </select>
+    </div>
+</div>
+<hr>
+<div class="bg-warning">
+<app-product-list></app-product-list>
+</div>
+<hr>
+<h3>Order Total Price:{{OrderPrice}}</h3>
+
