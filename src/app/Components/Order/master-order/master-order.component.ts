@@ -9,7 +9,7 @@ import { ICategory } from '../../../Models/icategory';
 export class MasterOrderComponent {
   catList : ICategory[];
   selectedCatId:number = 0;
-  OrderPrice:number=0;
+  recievedOrderPrice:number=0;
   constructor(){
     this.catList = [
       {id:1,name:"Samsung"},
@@ -18,4 +18,8 @@ export class MasterOrderComponent {
       {id:4,name:"Oppo"},
     ];
   }
+  changeTotalPrice(totalPrice:number)
+    {
+     this.recievedOrderPrice = totalPrice;
+    }
 }
